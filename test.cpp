@@ -543,12 +543,24 @@ static void test_print()
     Json_Print(cout, json2);
 }
 
+static void test_move()
+{
+    vector<Value> vec;
+    Value v1("abc");
+    Value v2(123);
+    Value v3(move(v1));
+    Value v4 = move(v2);
+    vec.push_back(move(v3));
+    vec.push_back(move(v4));
+}
+
 int main()
 {   
-    test_parse();
-    test_stringify();
-    test_print();
-    cout << test_pass << "/" << test_count << " (" << 100 * test_pass / test_count << "%)" << endl;
+ //   test_parse();
+ //   test_stringify();
+ //   test_print();
+ //   test_move();
+ //   cout << test_pass << "/" << test_count << " (" << 100 * test_pass / test_count << "%)" << endl;
     cin.get();
     return 0;
 }
