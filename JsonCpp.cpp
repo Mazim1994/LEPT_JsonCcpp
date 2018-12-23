@@ -649,7 +649,7 @@ Value::Value(Value &&v) noexcept
 {
     /*调试*/
     
-    std::cout<<"Use Move Constructer";
+    //std::cout<<"Use Move Constructer";
     
     /* */
 
@@ -901,7 +901,7 @@ Value& Value::operator=(Value &&rhs) noexcept
 {
 
     /*调试*/ 
-    std::cout<<"Use Move =";
+    //std::cout<<"Use Move =";
     /* */
 
     if(this != &rhs){
