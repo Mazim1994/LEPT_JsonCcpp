@@ -204,7 +204,7 @@ int Parser::parse_array(Value &v)
         {
             break;
         }
-        tmp.push_back(e);   // 难道是缺少拷贝构造导致push_back进行了浅拷贝？？
+        tmp.push_back(std::move(e)); 
         parse_whitespace();
         if(json[pos] == ','){
             pos++;
@@ -645,6 +645,40 @@ Value::Value(const Value &v)
     }
 }
 
+Value::Value(Value &&v) noexcept
+{
+    /*调试*/
+    
+    std::cout<<"Use Move Constructer";
+    
+    /* */
+
+
+    type = v.type;
+    switch (type)
+    {
+        case JSON_NULL:break;
+        case JSON_FALSE:break;
+        case JSON_TRUE:break;
+        case JSON_NUMBER:
+            num = v.num;
+            v.num = nullptr;
+            break;
+        case JSON_STRING:
+            str = v.str;
+            v.str = nullptr;
+            break;
+        case JSON_ARRAY:
+            array = v.array;
+            v.array = nullptr;
+            break;
+        case JSON_OBJECT:
+            object = v.object;
+            v.object = nullptr;
+            break;
+    }
+}
+
 Value::Value(const double num)
 {
     set_number(num);
@@ -839,7 +873,7 @@ bool Value::find_object_value(const std::string &key) const
 
 
 Value& Value::operator=(const Value &rhs)
-{
+{   
     free();
     type = rhs.type;
     switch(type){
@@ -862,6 +896,42 @@ Value& Value::operator=(const Value &rhs)
     }
     return *this;
 }
+
+Value& Value::operator=(Value &&rhs) noexcept
+{
+
+    /*调试*/ 
+    std::cout<<"Use Move =";
+    /* */
+
+    if(this != &rhs){
+        free();
+        type = rhs.type;
+        switch (type)
+        {
+            case JSON_NULL:break;
+            case JSON_FALSE:break;
+            case JSON_TRUE:break;
+            case JSON_NUMBER:
+                num = rhs.num;
+                rhs.num = nullptr;
+                break;
+            case JSON_STRING:
+                str = rhs.str;
+                rhs.str = nullptr;
+                break;
+            case JSON_ARRAY:
+                array = rhs.array;
+                rhs.array = nullptr;
+                break;
+            case JSON_OBJECT:
+                object = rhs.object;
+                rhs.object = nullptr;
+                break;
+        }
+    }
+}
+
 
 Value& Value::operator=(const std::string &str)
 {
