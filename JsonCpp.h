@@ -10,6 +10,7 @@
 #include <vector>
 #include <unordered_map>
 #include <iostream>
+#include <utility>
 
 namespace JsonCpp
 {
@@ -71,6 +72,7 @@ public:
     Value(const Value &v);
     Value(const double num);
     Value(const std::string &str);
+    Value(Value &&v) noexcept;
 
     void set_null();
     void set_true();
@@ -101,6 +103,7 @@ public:
     Value& operator=(const Value &rhs);
     Value& operator=(const std::string &str);
     Value& operator=(const double num);
+    Value& operator=(Value &&rhs) noexcept;
     Value& operator[](size_t index);
     Value& operator[](const std::string &s);
 };
